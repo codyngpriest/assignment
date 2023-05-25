@@ -1,3 +1,4 @@
+
 -- Create the products table
 CREATE TABLE products (
   id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

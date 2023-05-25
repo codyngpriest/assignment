@@ -1,6 +1,13 @@
 <?php
 require_once 'config/database.php';
 
+// Enable CORS
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token");
+header("Access-Control-Allow-Credentials: true");
+header('Content-Type: application/json');
+
 abstract class Product {
     protected $id;
     protected $sku;
@@ -48,7 +55,7 @@ abstract class Product {
         $db = DB::getInstance();
         $conn = $db->getConnection();
 
-        $stmt = $conn->prepare("SELECT * FROM products");
+        $stmt = $conn->prepare("SELECT * FROM products ORDER BY id ASC");
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -83,6 +90,17 @@ abstract class Product {
         $stmt->bindParam(':id', $id);
 
         return $stmt->execute();
+    }
+
+    public static function isSKUUnique($sku) {
+        $db = DB::getInstance();
+        $conn = $db->getConnection();
+
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM products WHERE sku = :sku");
+        $stmt->bindParam(':sku', $sku);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() == 0;
     }
 }
 ?>

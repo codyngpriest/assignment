@@ -1,6 +1,7 @@
 <?php
 require_once 'class/Product.php';
 
+
 // Check if the SKU parameter is provided in the URL
 if (isset($_GET['sku'])) {
     $sku = $_GET['sku'];
@@ -10,15 +11,15 @@ if (isset($_GET['sku'])) {
 
     // Check if the product exists
     if ($product) {
-        echo "<h2>Product Details</h2>";
-        echo "<p><strong>SKU:</strong> " . $product['sku'] . "</p>";
-        echo "<p><strong>Name:</strong> " . $product['name'] . "</p>";
-        echo "<p><strong>Price:</strong> " . $product['price'] . "</p>";
+        // Return the product details as JSON
+        echo json_encode($product);
     } else {
-        echo "Product not found.";
+        // Return an error message
+        echo json_encode(['error' => 'Product not found.']);
     }
 } else {
-    echo "Invalid request.";
+    // Return an error message
+    echo json_encode(['error' => 'Invalid request.']);
 }
 ?>
 

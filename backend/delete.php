@@ -2,6 +2,11 @@
 require_once 'config/database.php';
 require_once 'class/Product.php';
 
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Cache-Control: no-store');
+
 if (isset($_GET['sku'])) {
     // Single product deletion
     $sku = $_GET['sku'];
@@ -11,16 +16,18 @@ if (isset($_GET['sku'])) {
     } else {
         echo "Failed to delete product with SKU '$sku'.";
     }
-} elseif (isset($_POST['delete_selected'])) {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Mass delete operation
-    if (isset($_POST['selected_products']) && is_array($_POST['selected_products'])) {
-        $selectedProducts = $_POST['selected_products'];
+    $data = json_decode(file_get_contents('php://input'), true);
 
-        foreach ($selectedProducts as $productId) {
-            if (Product::deleteProductById($productId)) {
-                echo "Product with ID '$productId' has been deleted.<br>";
+    if (isset($data['skus']) && is_array($data['skus'])) {
+        $selectedSkus = $data['skus'];
+
+        foreach ($selectedSkus as $sku) {
+            if (Product::deleteProductBySKU($sku)) {
+                echo "Product with SKU '$sku' has been deleted.<br>";
             } else {
-                echo "Failed to delete product with ID '$productId'.<br>";
+                echo "Failed to delete product with SKU '$sku'.<br>";
             }
         }
     } else {
@@ -30,3 +37,4 @@ if (isset($_GET['sku'])) {
     echo "Invalid operation.";
 }
 ?>
+

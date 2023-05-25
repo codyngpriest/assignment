@@ -1,6 +1,10 @@
 <?php
 require_once 'Product.php';
 
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Cache-Control: no-store');
+
 class Furniture extends Product {
     protected $height;
     protected $width;
@@ -42,13 +46,20 @@ class Furniture extends Product {
 
         return true;
     }
-
     public function display() {
-        echo "SKU: " . $this->sku . "<br>";
-        echo "Name: " . $this->name . "<br>";
-        echo "Price: " . $this->price . "<br>";
-        echo "Dimensions: " . $this->getDimensions() . "<br>";
-    }
+      echo "<div>";
+      echo "<strong>Product Type:</strong> Furniture";
+      echo "<br>";
+      echo "<strong>SKU:</strong> " . $this->getSKU();
+      echo "<br>";
+      echo "<strong>Name:</strong> " . $this->getName();
+      echo "<br>";
+      echo "<strong>Price:</strong> " . $this->getPrice() . " $";
+      echo "<br>";
+      echo "<strong>Dimensions:</strong> " . $this->height . " x " . $this->width . " x " . $this->length . " cm";
+      echo "</div>";
+}
+
 }
 ?>
 

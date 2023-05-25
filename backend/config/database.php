@@ -1,6 +1,11 @@
 <?php
 require_once 'config.php';
 
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Cache-Control: no-store');
+
+
 class DB {
     private static $instance = null;
     private $host;
