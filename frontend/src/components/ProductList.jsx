@@ -62,11 +62,13 @@ const ProductList = () => {
   };
 
   return (
-    <div>
+    <div className='grid grid-cols-3 gap-4'>
       <h1>Product List</h1>
       {Array.isArray(products) && products.length > 0 ? (
         products.map((product) => (
+          <div key={product.sku} className='bg-white p-4 shadow-md'>
           <ProductItem key={product.sku} product={product} onDelete={handleDelete} onCheckboxChange={handleCheckboxChange} />
+          </div>
         ))
       ) : (
         <p>No products available.</p>
