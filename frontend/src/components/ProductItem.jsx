@@ -1,7 +1,6 @@
 import React from 'react';
 
 function ProductItem({ product, onCheckboxChange }) {
-
   const handleCheckboxChange = () => {
     onCheckboxChange(product.sku);
   };
@@ -9,32 +8,34 @@ function ProductItem({ product, onCheckboxChange }) {
   return (
     <div>
       <input
-        className='delete-checkbox'
+        className="delete-checkbox"
         type="checkbox"
         checked={product.selected || false}
         onChange={handleCheckboxChange}
       />
-      <h3>{product.sku}</h3>
-      <p>{product.name}</p>
-      <p>{product.price} $</p>
+      <div className='text-center italic'>
+      <h3 className="text-sm font-black font-thin">{product.sku}</h3>
+      <p className="text-sm">{product.name}</p>
+      <p className="text-sm">{product.price} $</p>
 
       {product.type === 'Book' && (
         <div>
-          <p>Weight: {product.weight}KG</p>
+          <p className="text-sm">Weight: {product.weight}KG</p>
         </div>
       )}
 
       {product.type === 'DVD' && (
         <div>
-          <p>Size: {product.size} MB</p>
+          <p className="text-sm">Size: {product.size} MB</p>
         </div>
       )}
 
       {product.type === 'Furniture' && (
         <div>
-          <p>Dimensions: {product.length} x {product.width} x {product.height}</p>
+          <p className="text-sm">Dimensions: {product.length} x {product.width} x {product.height}</p>
         </div>
       )}
+    </div>
     </div>
   );
 }

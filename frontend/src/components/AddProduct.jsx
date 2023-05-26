@@ -128,60 +128,78 @@ function AddProduct() {
     // Redirect to the product list page
     navigate('/product-list');
   };
-
-return (
-  <div>
-    <h3>Product Add</h3>
-    <form onSubmit={handleFormSubmit} id='product_form'>
-      {notification && <p>{notification}</p>}
-      <div>
-        <label htmlFor="sku">SKU</label>
-        <input
-          type="text"
-          id="sku"
-          value={sku}
-          onChange={(e) => setSku(e.target.value)}
-          placeholder="Please, enter SKU"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Please, enter name"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="price">Price($)</label>
-        <input
-          type="number"
-          id="price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          placeholder="Please enter price"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="productType">Type Switcher</label>
-        <select
-          id="productType"
-          value={productType}
-          onChange={(e) => setProductType(e.target.value)}
-          required
-        >
-          <option value="TypeSwitcher">Type Switcher</option>
-          <option id='Furniture' value="Furniture">Furniture</option>
-          <option  id='DVD' value="DVD">DVD-disc</option>
-          <option  id='Book' value="Book">Book</option>
-        </select>
-      </div>
-      {productType === 'Furniture' && (
+  return (
+    <div className="bg-gray-100 p-4">
+      <h1 className="text-orange-600 font-bold text-4xl">Product Add</h1>
+      <div className='border-b-4 border-black mb-5 mt-5'></div>
+      <form onSubmit={handleFormSubmit} id="product_form">
+        {notification && <p className="text-red-500 mb-4">{notification}</p>}
+        <div className="mb-4">
+          <label htmlFor="sku" className="block mb-2 font-semibold">
+            SKU
+          </label>
+          <input
+            type="text"
+            id="sku"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
+            placeholder="Please, enter product SKU"
+            required
+            className="px-4 py-2 border border-gray-300 rounded w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="name" className="block mb-2 font-semibold">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Please, enter product name"
+            required
+            className="px-4 py-2 border border-gray-300 rounded w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="price" className="block mb-2 font-semibold">
+            Price($)
+          </label>
+          <input
+            type="number"
+            id="price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Please, enter product price"
+            required
+            className="px-4 py-2 border border-gray-300 rounded w-full"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="productType" className="block mb-2 font-semibold">
+            Type Switcher
+          </label>
+          <select
+            id="productType"
+            value={productType}
+            onChange={(e) => setProductType(e.target.value)}
+            required
+            className="px-4 py-2 border border-gray-300 rounded w-full"
+          >
+            <option value="TypeSwitcher">Type Switcher</option>
+            <option id="Furniture" value="Furniture">
+              Furniture
+            </option>
+            <option id="DVD" value="DVD">
+              DVD-disc
+            </option>
+            <option id="Book" value="Book">
+              Book
+            </option>
+          </select>
+        </div>
+              {productType === 'Furniture' && (
         <>
           <div>
             <label htmlFor="height">Height (CM):</label>
@@ -212,11 +230,11 @@ return (
               id="length"
               value={length}
               onChange={(e) => setLength(e.target.value)}
-              placeholder="Please, enter height"
+              placeholder="Please, enter length"
               required
             />
           </div>
-            <p>Please, provide dimensions in HxWxL format</p>
+            <p className='text-red-600 mt-4'>Please, provide dimensions in HxWxL format</p>
         </>
       )}
       {productType === 'DVD' && (
@@ -232,7 +250,7 @@ return (
               required
             />
           </div>
-            <p>Please, provide size in Megabytes</p>
+            <p className='text-red-600 mt-4'>Please, provide size in Megabytes</p>
         </>
       )}
       {productType === 'Book' && (
@@ -248,17 +266,30 @@ return (
               required
             />
           </div>
-            <p>Please, provide weight in KG</p>
+            <p className='text-red-600 mt-4'>Please, provide weight in KG</p>
         </>
       )}
-        <div>
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleCancel}>Cancel</button>
+        <div className="flex justify-end">
+          <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className="px-4 py-2 bg-gray-500 text-white rounded"
+        >
+          Cancel
+        </button>
       </div>
     </form>
+    <div className='border-b-4 border-black mb-5 mt-5'></div>
   </div>
 );
 
 }
 
 export default AddProduct;
+

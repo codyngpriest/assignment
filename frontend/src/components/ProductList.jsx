@@ -62,28 +62,52 @@ const ProductList = () => {
   };
 
   return (
-    <div className='grid grid-cols-3 gap-4'>
-      <h1>Product List</h1>
-      {Array.isArray(products) && products.length > 0 ? (
-        products.map((product) => (
-          <div key={product.sku} className='bg-white p-4 shadow-md'>
-          <ProductItem key={product.sku} product={product} onDelete={handleDelete} onCheckboxChange={handleCheckboxChange} />
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-orange-600 font-bold text-4xl">Product List</h1>
+        {Array.isArray(products) && products.length > 0 && (
+          <div className="flex space-x-2">
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              id="delete-product-btn"
+              type="button"
+              onClick={handleMassDelete}
+            >
+              MASS DELETE
+            </button>
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              onClick={handleNewProductAdded}
+            >
+              ADD
+            </button>
           </div>
-        ))
+        )}
+      </div>
+      <div className='border-b-4 border-black mb-5 mt-10'></div>
+
+      {Array.isArray(products) && products.length > 0 ? (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 pt-4">
+          {products.map((product) => (
+            <div key={product.sku} className="border p-4 shadow-md rounded-lg">
+              <ProductItem
+                key={product.sku}
+                product={product}
+                onDelete={handleDelete}
+                onCheckboxChange={handleCheckboxChange}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
-        <p>No products available.</p>
+        <p className='text-red-600 mt-4'>No products available!</p>
       )}
-      {Array.isArray(products) && products.length > 0 && (
-        <>
-          <button id='delete-product-btn' type="button" onClick={handleMassDelete}>
-            MASS DELETE
-          </button>
-          <button type="button" onClick={handleNewProductAdded}>ADD</button>
-        </>
-      )}
+    <div className='border-b-4 border-black mb-5 mt-10'></div>
     </div>
   );
 };
 
 export default ProductList;
+
 
