@@ -2,7 +2,17 @@
 require_once 'config/database.php';
 require_once 'class/Product.php';
 
+header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Content-Type: application/json');
+
 $products = Product::getAllProducts();
 
-echo json_encode($products);
+// Transform products to an array of product data
+$productData = [];
+foreach ($products as $product) {
+    $productData[] = $product->getData();
+}
+
+echo json_encode($productData);
 ?>
+

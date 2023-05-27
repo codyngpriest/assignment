@@ -21,6 +21,7 @@ class DVD extends Product {
     public function getSize() {
         return $this->size;
     }
+
     public function save() {
         $database = new DB();
         $db = $database->getConnection();
@@ -41,7 +42,7 @@ class DVD extends Product {
         return true;
     }
 
-        public function display() {
+    public function display() {
         echo "<div>";
         echo "<strong>Product Type:</strong> DVD";
         echo "<br>";
@@ -54,8 +55,10 @@ class DVD extends Product {
         echo "<strong>Size:</strong> " . $this->getSize() . " MB";
         echo "</div>";
     }
+
+    public function getProductType() {
+        return "DVD";
+    }
 }
-
 ?>
-
 

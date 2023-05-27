@@ -1,9 +1,6 @@
 <?php
 require_once 'config/database.php';
-require_once 'class/Product.php';
-require_once 'class/DVD.php';
-require_once 'class/Book.php';
-require_once 'class/Furniture.php';
+require_once 'class/ProductFactory.php';
 
 header('Access-Control-Allow-Origin: http://localhost:5173');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -27,25 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!Product::isSKUUnique($sku)) {
         $notification = "Product with the same SKU already exists";
     } else {
-        // Create an instance of the appropriate product type based on the selected product type
-        switch ($type) {
-            case 'DVD':
-                $product = new DVD($sku, $name, $price);
-                $product->setSize($data['size']);
-                break;
-            case 'Book':
-                $product = new Book($sku, $name, $price);
-                $product->setWeight($data['weight']);
-                break;
-            case 'Furniture':
-                $product = new Furniture($sku, $name, $price, $data['length'], $data['width'], $data['height']);
-                break;
-            default:
-                $notification = "Invalid product type";
-                break;
-        }
+        try {
+            // Create the product using the ProductFactory
+            $product = ProductFactory::createProduct($data);
 
-        if (isset($product)) {
             // Establish a database connection
             $conn = getConnection();
 
@@ -60,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Close the database connection
             closeConnection($conn);
+        } catch (Exception $e) {
+            $notification = $e->getMessage();
         }
     }
 }
@@ -74,7 +58,7 @@ function getConnection()
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
     return $conn;

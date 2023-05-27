@@ -50,6 +50,7 @@ abstract class Product {
 
     abstract public function save();
     abstract public function display();
+    abstract public function getProductType(); // New abstract method
 
     public static function getAllProducts() {
         $db = DB::getInstance();

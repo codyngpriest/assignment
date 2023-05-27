@@ -46,20 +46,24 @@ class Furniture extends Product {
 
         return true;
     }
-    public function display() {
-      echo "<div>";
-      echo "<strong>Product Type:</strong> Furniture";
-      echo "<br>";
-      echo "<strong>SKU:</strong> " . $this->getSKU();
-      echo "<br>";
-      echo "<strong>Name:</strong> " . $this->getName();
-      echo "<br>";
-      echo "<strong>Price:</strong> " . $this->getPrice() . " $";
-      echo "<br>";
-      echo "<strong>Dimensions:</strong> " . $this->height . " x " . $this->width . " x " . $this->length . " cm";
-      echo "</div>";
-}
 
+    public function display() {
+        echo "<div>";
+        echo "<strong>Product Type:</strong> Furniture";
+        echo "<br>";
+        echo "<strong>SKU:</strong> " . $this->getSKU();
+        echo "<br>";
+        echo "<strong>Name:</strong> " . $this->getName();
+        echo "<br>";
+        echo "<strong>Price:</strong> " . $this->getPrice() . " $";
+        echo "<br>";
+        echo "<strong>Dimensions:</strong> " . $this->getDimensions();
+        echo "</div>";
+    }
+
+    public function getProductType() {
+        return "Furniture";
+    }
 }
 ?>
 

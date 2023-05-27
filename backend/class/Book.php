@@ -5,7 +5,6 @@ header('Access-Control-Allow-Origin: http://localhost:5173');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Cache-Control: no-store');
 
-
 class Book extends Product {
     private $weight;
 
@@ -20,32 +19,33 @@ class Book extends Product {
     public function getWeight() {
         return $this->weight;
     }
-  public function save()
-{
-    try {
-        $database = new DB();
-        $db = $database->getConnection();
 
-        // Insert product into the 'products' table
-        $query = "INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, 'Book')";
-        $stmt = $db->prepare($query);
-        $stmt->execute([$this->sku, $this->name, $this->price]);
+    public function save()
+    {
+        try {
+            $database = new DB();
+            $db = $database->getConnection();
 
-        // Get the ID of the newly inserted product
-        $this->id = $db->lastInsertId();
+            // Insert product into the 'products' table
+            $query = "INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, 'Book')";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$this->sku, $this->name, $this->price]);
 
-        // Insert Book-specific attributes into the 'book_products' table
-        $query = "INSERT INTO book_products (id, weight) VALUES (?, ?)";
-        $stmt = $db->prepare($query);
-        $stmt->execute([$this->id, $this->weight]);
+            // Get the ID of the newly inserted product
+            $this->id = $db->lastInsertId();
 
-        return true;
-    } catch (PDOException $e) {
-        // Log or handle the error gracefully
-        error_log("Error saving Book: " . $e->getMessage());
-        return false;
+            // Insert Book-specific attributes into the 'book_products' table
+            $query = "INSERT INTO book_products (id, weight) VALUES (?, ?)";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$this->id, $this->weight]);
+
+            return true;
+        } catch (PDOException $e) {
+            // Log or handle the error gracefully
+            error_log("Error saving Book: " . $e->getMessage());
+            return false;
+        }
     }
-}
 
     public function display() {
         echo "<div>";
@@ -60,7 +60,10 @@ class Book extends Product {
         echo "<strong>Weight:</strong> " . $this->getWeight() . " Kg";
         echo "</div>";
     }
-}
 
+    public function getProductType() {
+        return "Book";
+    }
+}
 ?>
 
