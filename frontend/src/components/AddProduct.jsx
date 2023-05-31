@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header.jsx';
+import Footer from './Footer.jsx';
 
 function AddProduct() {
   const [sku, setSku] = useState('');
@@ -129,6 +131,8 @@ function AddProduct() {
     navigate('/product-list');
   };
   return (
+    <>
+    <Header />
     <div className="bg-gray-100 p-4">
       <h1 className="text-orange-600 font-bold text-4xl">Product Add</h1>
       <div className='border-b-4 border-black mb-5 mt-5'></div>
@@ -287,6 +291,8 @@ function AddProduct() {
     </form>
     <div className='border-b-4 border-black mb-5 mt-5'></div>
   </div>
+  <Footer />
+  </>
 );
 
 }

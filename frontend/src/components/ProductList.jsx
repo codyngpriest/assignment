@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductItem from './ProductItem';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header.jsx';
+import Footer from './Footer.jsx';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -62,6 +64,8 @@ const ProductList = () => {
   };
 
   return (
+    <>
+      <Header />
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-orange-600 font-bold text-4xl">Product List</h1>
@@ -105,6 +109,8 @@ const ProductList = () => {
       )}
     <div className='border-b-4 border-black mb-5 mt-10'></div>
     </div>
+      <Footer />
+    </>
   );
 };
 
