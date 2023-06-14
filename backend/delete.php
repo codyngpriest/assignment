@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 require_once 'class/Product.php';
 
-header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Cache-Control: no-store');

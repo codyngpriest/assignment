@@ -2,7 +2,7 @@
 require_once 'Product.php';
 
 // Allow cross-origin requests
-header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header("Access-Control-Allow-Credentials: true");
@@ -10,8 +10,9 @@ header("Access-Control-Allow-Credentials: true");
 class DVD extends Product {
     private $size;
 
-    public function __construct($sku, $name, $price) {
-        parent::__construct($sku, $name, $price);
+    public function __construct($sku, $name, $price, $size) {
+	    parent::__construct($sku, $name, $price);
+	    $this->size = $size;
     }
 
     public function setSize($size) {

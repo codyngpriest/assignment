@@ -21,7 +21,7 @@ function AddProduct() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/backend/read.php');
+      const response = await axios.get('http://132.148.79.85/backend/read.php');
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products', error);
@@ -88,7 +88,7 @@ function AddProduct() {
 
     try {
       // Add the new product
-      const addResponse = await axios.post('http://localhost:8000/backend/add.php', newProduct);
+      const addResponse = await axios.post('http://132.148.79.85/backend/add.php', newProduct);
 
       if (addResponse.status === 200) {
         setNotification('Product added successfully');
@@ -107,7 +107,7 @@ function AddProduct() {
         fetchProducts();
 
         // Redirect to the product list page
-        navigate('/product-list');
+        navigate('/');
       } else {
         console.error('Error adding product');
       }
@@ -128,7 +128,7 @@ function AddProduct() {
     setLength('');
 
     // Redirect to the product list page
-    navigate('/product-list');
+    navigate('/');
   };
   return (
     <>
@@ -273,10 +273,10 @@ function AddProduct() {
             <p className='text-red-600 mt-4'>Please, provide weight in KG</p>
         </>
       )}
-        <div className="flex justify-end">
+        <div className="flex space-x-2">
           <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+          className="px-4 py-2 bg-blue-500 text-white rounded mr-2 ml-auto"
         >
           Save
         </button>

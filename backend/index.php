@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 require_once 'class/Product.php';
 
-header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 $products = Product::getAllProducts();

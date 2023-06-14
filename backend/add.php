@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 require_once 'class/ProductFactory.php';
 
-header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Cache-Control: no-store');
 
@@ -52,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 function getConnection()
 {
     $servername = "localhost";
-    $username = "codyngpriest";
-    $password = "@Yttrgh1";
-    $dbname = "product_database";
+    $username = "root";
+    $password = "Limitless@2020";
+    $dbname = "products_database";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {

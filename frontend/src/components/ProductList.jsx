@@ -16,7 +16,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const readResponse = await axios.get('http://localhost:8000/backend/read.php');
+      const readResponse = await axios.get('http://132.148.79.85/backend/read.php');
 
       if (readResponse.status === 200) {
         const data = readResponse.data;
@@ -31,7 +31,7 @@ const ProductList = () => {
 
   const handleDelete = async (sku) => {
     try {
-      await axios.delete(`http://localhost:8000/backend/delete.php?sku=${sku}`);
+      await axios.delete(`http://132.148.79.85/backend/delete.php?sku=${sku}`);
       setProducts(prevProducts => prevProducts.filter(product => product.sku !== sku));
     } catch (error) {
       console.log('Error deleting product:', error);
@@ -43,7 +43,7 @@ const ProductList = () => {
     const selectedSkus = selectedProducts.map((product) => product.sku);
 
     try {
-      await axios.delete('http://localhost:8000/backend/delete.php', { data: { skus: selectedSkus } });
+      await axios.delete('http://132.148.79.85/backend/delete.php', { data: { skus: selectedSkus } });
       const updatedProducts = products.filter((product) => !selectedSkus.includes(product.sku));
       setProducts(updatedProducts);
     } catch (error) {
@@ -72,19 +72,19 @@ const ProductList = () => {
         {Array.isArray(products) && products.length > 0 && (
           <div className="flex space-x-2">
             <button
-              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
               id="delete-product-btn"
-              type="button"
-              onClick={handleMassDelete}
-            >
-              MASS DELETE
-            </button>
-            <button
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
               type="button"
               onClick={handleNewProductAdded}
             >
               ADD
+            </button>
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              onClick={handleMassDelete}
+            >
+              MASS DELETE
             </button>
           </div>
         )}

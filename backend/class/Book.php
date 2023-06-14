@@ -1,15 +1,16 @@
 <?php
 require_once 'Product.php';
 
-header('Access-Control-Allow-Origin: http://localhost:5173');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Cache-Control: no-store');
 
 class Book extends Product {
     private $weight;
 
-    public function __construct($sku, $name, $price) {
-        parent::__construct($sku, $name, $price);
+    public function __construct($sku, $name, $price, $weight) {
+	    parent::__construct($sku, $name, $price);
+	    $this->weight = $weight;
     }
 
     public function setWeight($weight) {
