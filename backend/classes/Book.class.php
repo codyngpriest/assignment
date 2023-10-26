@@ -1,31 +1,19 @@
 <?php
-require_once 'Product.php';
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
-header('Cache-Control: no-store');
-
 class Book extends Product {
     private $weight;
 
     public function __construct($sku, $name, $price, $weight) {
-	    parent::__construct($sku, $name, $price);
-	    $this->weight = $weight;
+        parent::__construct($sku, $name, $price);
+        $this->weight = $weight;
     }
 
     public function setWeight($weight) {
         $this->weight = $weight;
     }
 
-    public function getWeight() {
-        return $this->weight;
-    }
-
-    public function save()
-    {
+    public function save() {
         try {
-            $database = new DB();
-            $db = $database->getConnection();
+            $db = $this->openConnection();
 
             // Insert product into the 'products' table
             $query = "INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, 'Book')";
@@ -40,6 +28,8 @@ class Book extends Product {
             $stmt = $db->prepare($query);
             $stmt->execute([$this->id, $this->weight]);
 
+            $this->closeConnection($db); // Close the connection
+
             return true;
         } catch (PDOException $e) {
             // Log or handle the error gracefully
@@ -52,12 +42,7 @@ class Book extends Product {
         echo "<div>";
         echo "<strong>Product Type:</strong> Book";
         echo "<br>";
-        echo "<strong>SKU:</strong> " . $this->getSKU();
-        echo "<br>";
-        echo "<strong>Name:</strong> " . $this->getName();
-        echo "<br>";
-        echo "<strong>Price:</strong> " . $this->getPrice() . " $";
-        echo "<br>";
+        parent::display(); // Reuse the parent's display method
         echo "<strong>Weight:</strong> " . $this->getWeight() . " Kg";
         echo "</div>";
     }
@@ -66,5 +51,4 @@ class Book extends Product {
         return "Book";
     }
 }
-?>
 
