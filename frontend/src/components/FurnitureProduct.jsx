@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const FurnitureProduct = ({ sku, name, price, dimensions }) => {
-  const { height, width, length } = dimensions;
-  return (
-    <div>
-      <h3>{sku}</h3>
-      <p>{name}</p>
-      <p>{price} $</p>
-      <p>Dimensions: {height} x {width} x {length}</p>
-    </div>
-  );
-};
+class FurnitureProduct extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { sku, name, price, width, length, height } = this.props;
+
+    return (
+      <div>
+        <h3>{sku}</h3>
+        <p>{name}</p>
+        <p>{price} $</p>
+        <p>Dimensions: {length} x {width} x {height}</p>
+      </div>
+    );
+  }
+}
 
 export default FurnitureProduct;
 

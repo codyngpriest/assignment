@@ -3,12 +3,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
+import BookProduct from './BookProduct.jsx';
+import DVDProduct from './DVDProduct.jsx';
+import FurnitureProduct from './FurnitureProduct.jsx';
 
 function AddProduct() {
   const [sku, setSku] = useState('');
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
-  const [productType, setProductType] = useState('Type Switcher');
+  const [productType, setProductType] = useState('TypeSwitcher');
   const [size, setSize] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
@@ -21,7 +24,8 @@ function AddProduct() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://132.148.79.85/backend/read.php');
+      const response = await axios.get('http://localhost:8000/app/product/read');
+      console.log('Fetched products:', response.data);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products', error);
@@ -33,88 +37,100 @@ function AddProduct() {
   }, []);
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Validate form data
-    if (!sku || !name || !price) {
-      alert('Please provide all required fields.');
+  // Validate form data
+  if (!sku || !name || !price) {
+    alert('Please provide all required fields.');
+    return;
+  }
+
+  if (productType === 'TypeSwitcher') {
+    alert('Please select a valid product type.');
+    return;
+  }
+
+  // Check for duplicate SKU
+  const duplicateProduct = products.find((product) => product.sku === sku);
+  if (duplicateProduct) {
+    setNotification('A product with the same SKU already exists.');
+    return;
+  }
+
+  let productInstance;
+
+  if (productType === 'Book') {
+    if (!weight) {
+      alert('Please provide the weight.');
       return;
     }
 
-    // Check for duplicate SKU
-    const duplicateProduct = products.find((product) => product.sku === sku);
-    if (duplicateProduct) {
-      setNotification('A product with the same SKU already exists.');
+    // Create a new BookProduct instance with the required arguments
+    productInstance = new BookProduct(sku, name, price, weight);
+  } else if (productType === 'DVD') {
+    if (!size) {
+      alert('Please provide the size.');
       return;
     }
 
-    // Create a new product object based on the form data
-    const newProduct = {
-      sku,
-      name,
-      price,
-      type: productType,
-      length,
-      width,
-      height,
-      size,
-      weight,
-    };
-
-    console.log(newProduct) // help debug
-
-    // Add additional properties based on the selected product type
-    if (productType === 'Book') {
-      if (!weight) {
-        alert('Please provide the weight.');
-        return;
-      }
-      newProduct.weight = weight;
-    } else if (productType === 'DVD') {
-      if (!size) {
-        alert('Please provide the size.');
-        return;
-      }
-      newProduct.size = size;
-    } else if (productType === 'Furniture') {
-      if (!length || !width || !height) {
-        alert('Please provide the dimensions.');
-        return;
-      }
-      newProduct.length = length;
-      newProduct.width = width;
-      newProduct.height = height;
+    // Create a new DVDProduct instance with the required arguments
+    productInstance = new DVDProduct(sku, name, price, size);
+  } else if (productType === 'Furniture') {
+    if (!length || !width || !height) {
+      alert('Please provide the dimensions.');
+      return;
     }
 
-    try {
-      // Add the new product
-      const addResponse = await axios.post('http://132.148.79.85/backend/add.php', newProduct);
+    // Create a new FurnitureProduct instance with the required arguments
+    productInstance = new FurnitureProduct(sku, name, price, width, length, height);
+  }
 
-      if (addResponse.status === 200) {
-        setNotification('Product added successfully');
-        // Reset form fields
-        setSku('');
-        setName('');
-        setPrice('');
-        setProductType('Type Switcher');
-        setSize('');
-        setWeight('');
-        setHeight('');
-        setWidth('');
-        setLength('');
-
-        // Fetch updated product list
-        fetchProducts();
-
-        // Redirect to the product list page
-        navigate('/');
-      } else {
-        console.error('Error adding product');
-      }
-    } catch (error) {
-      console.error('Error adding product', error);
-    }
+  // Create a new product object
+  const newProduct = {
+    sku,
+    name,
+    price,
+    type: productType,
+    weight,
+    size,
+    height,
+    width,
+    length,
   };
+
+  console.log(newProduct);
+
+  try {
+    // Add the new product
+    const addResponse = await axios.post('http://localhost:8000/app/product/add', newProduct);
+
+    if (addResponse.status === 200) {
+      setNotification('Product added successfully');
+      // Reset form fields
+      setSku('');
+      setName('');
+      setPrice('');
+      setProductType('TypeSwitcher');
+      setSize('');
+      setWeight('');
+      setHeight('');
+      setWidth('');
+      setLength('');
+
+      // Fetch updated product list
+      fetchProducts();
+
+      // Redirect to the product list page
+      navigate('/');
+    } else {
+      console.error('Error adding product');
+    }
+  } catch (error) {
+    console.error('Error adding product', error);
+  }
+};
+
+
   const handleCancel = () => {
     // Reset form fields
     setSku('');
@@ -196,7 +212,7 @@ function AddProduct() {
               Furniture
             </option>
             <option id="DVD" value="DVD">
-              DVD-disc
+              DVD
             </option>
             <option id="Book" value="Book">
               Book

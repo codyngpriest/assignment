@@ -2,7 +2,7 @@ import React from 'react';
 
 function ProductItem({ product, onCheckboxChange }) {
   const handleCheckboxChange = () => {
-    onCheckboxChange(product.sku);
+    onCheckboxChange(product.id);
   };
 
   return (

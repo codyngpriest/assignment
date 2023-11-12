@@ -1,8 +1,15 @@
-<IfModule mod_headers.c>
-    Header always set Access-Control-Allow-Origin "http://localhost:5173"
-    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE"
-    Header always set Access-Control-Allow-Headers "Content-Type"
-    Header always set Access-Control-Allow-Credentials "true"
-</IfModule>
+RewriteEngine On
+# Set RewriteBase to the correct subdirectory
+RewriteBase /assignment/backend
 
+# Handle requests for existing files or directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Allow DELETE requests
+RewriteCond %{REQUEST_METHOD} DELETE
+RewriteRule ^(.*)$ /assignment/backend/index.php [L]
+
+# Rewrite all other requests to the index.php file
+RewriteRule ^(.*)$ /assignment/backend/index.php [L]
 

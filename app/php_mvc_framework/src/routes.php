@@ -1,6 +1,19 @@
 <?php
+/**
+ * Defines a route for the custom MVC.
+ * php version 8.1
+ *
+ * @category Custom_MVC
+ * @package  MVC
+ * @author   Vilho Banike <vilhopriestly@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     https://codyngpriest@github.com
+ */
+
 use Codyngpriest\PhpMvcFramework\Router;
 use Codyngpriest\PhpMvcFramework\Controllers\ProductController;
+
+// Instantiate a new Router
 $router = new Router();
 
 // Route for adding products
@@ -9,10 +22,19 @@ $router->addRoute('/app/product/add', ProductController::class, 'addProducts');
 // Route for reading products
 $router->addRoute('/app/product/read', ProductController::class, 'readProducts');
 
-$router->addRoute('/app/product/delete-selected', ProductController::class, 'deleteSelectedProducts');
+// Route for deleting a single product
+$router->addRoute(
+    '/app/product/delete/{id}',
+    ProductController::class,
+    'deleteProduct'
+);
 
-
-$router->addRoute('/', ProductController::class, 'index');
+// Route for deleting selected products
+$router->addRoute(
+    '/app/product/delete-selected',
+    ProductController::class,
+    'deleteSelectedProducts'
+);
 
 return $router;
 

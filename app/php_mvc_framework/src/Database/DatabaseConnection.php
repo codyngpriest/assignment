@@ -1,34 +1,96 @@
 <?php
+/**
+ * Handles DB connection for Mysql DB
+ * php version 8.1
+ *
+ * @category Custom_MVC
+ * @package  MVC
+ * @author   Vilho Banike <vilhopriestly@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     https://codyngpriest@github.com
+ */
+
 namespace Codyngpriest\PhpMvcFramework\Database;
 
 use PDO;
 use PDOException;
 
-class DatabaseConnection {
-    private $host;
-    private $db;
-    private $username;
-    private $password;
-    private $conn;
-    private static $instance = null;
 
-    private function __construct() {
-        $this->host = DatabaseConfig::DB_HOST;
-        $this->db = DatabaseConfig::DB_NAME;
-        $this->username = DatabaseConfig::DB_USER;
-        $this->password = DatabaseConfig::DB_PASSWORD;
+/**
+ * Handles DB connection for Mysql DB
+ * php version 8.1
+ *
+ * @category Custom_MVC
+ * @package  MVC
+ * @author   Vilho Banike <vilhopriestly@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     https://codyngpriest@github.com
+ */
+class DatabaseConnection
+{
+    private $_host;
+    private $_db;
+    private $_username;
+    private $_password;
+    private $_conn;
+    private static $_instance = null;
+    /**
+     * Handles props for DB configuration.
+     * php version 8.1
+     *
+     * @category Custom_MVC
+     * @package  MVC
+     * @author   Vilho Banike <vilhopriestly@gmail.com>
+     * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+     * @link     https://codyngpriest@github.com
+     */
+    private function __construct()
+    {
+        $this->_host = DatabaseConfig::DB_HOST;
+        $this->_db = DatabaseConfig::DB_NAME;
+        $this->_username = DatabaseConfig::DB_USER;
+        $this->_password = DatabaseConfig::DB_PASSWORD;
     }
-
-    public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new DatabaseConnection();
+    /**
+     * Handles an instance for DB connection
+     * php version 8.1
+     *
+     * @category Custom_MVC
+     * @package  MVC
+     * @author   Vilho Banike <vilhopriestly@gmail.com>
+     * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+     * @link     https://codyngpriest@github.com
+     *
+     * @return An instance of the connection
+     */
+    public static function getInstance()
+    {
+        if (self::$_instance === null) {
+            self::$_instance = new DatabaseConnection();
         }
-        return self::$instance;
+        return self::$_instance;
     }
-
-    public function openConnection() {
+     /**
+      * Handles database open connection for DB connection
+      * php version 8.1
+      *
+      * @category Custom_MVC
+      * @package  MVC
+      * @author   Vilho Banike <vilhopriestly@gmail.com>
+      * @license  http://opensource.org/licenses/gpl-license.php
+      * GNU Public License
+      * @link     https://codyngpriest@github.com
+      *
+      * @return The open connection
+      */
+    public function openConnection()
+    {
         try {
-            $this->conn = new PDO("mysql:host={$this->host};dbname={$this->db}", $this->username, $this->password);
+            $this->conn = new PDO(
+                "mysql:host={$this->_host};dbname={$this->_db}",
+                $this->_username,
+                $this->_password
+            );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("set names utf8");
 
@@ -37,17 +99,43 @@ class DatabaseConnection {
 
             return $this->conn; // Return the database connection
         } catch (PDOException $e) {
-            // Handle the error gracefully, e.g., log it and display a user-friendly message.
+            // Handle the error gracefully
             error_log("Database connection error: " . $e->getMessage());
             die("Oops! Something went wrong. Please try again later.");
         }
     }
-
-    public function closeConnection() {
+     /**
+      * Handles an instance for DB closing.
+      * php version 8.1
+      *
+      * @category Custom_MVC
+      * @package  MVC
+      * @author   Vilho Banike <vilhopriestly@gmail.com>
+      * @license  http://opensource.org/licenses/gpl-license.php  GNU
+      * Public License
+      * @link     https://codyngpriest@github.com
+      *
+      * @return The closed connection
+      */
+    public function closeConnection()
+    {
         $this->conn = null;
     }
-
-    public function getConnection() {
+     /**
+      * Handles an instance for DB opening
+      * php version 8.1
+      *
+      * @category Custom_MVC
+      * @package  MVC
+      * @author   Vilho Banike <vilhopriestly@gmail.com>
+      * @license  http://opensource.org/licenses/gpl-license.php  GNU
+      * Public License
+      * @link     https://codyngpriest@github.com
+      *
+      * @return The open connection
+      */
+    public function getConnection()
+    {
         return $this->conn;
     }
 }

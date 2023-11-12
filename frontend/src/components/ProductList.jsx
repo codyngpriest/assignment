@@ -16,7 +16,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const readResponse = await axios.get('http://132.148.79.85/backend/read.php');
+      const readResponse = await axios.get('http://localhost:8000/app/product/read');
 
       if (readResponse.status === 200) {
         const data = readResponse.data;
@@ -29,36 +29,43 @@ const ProductList = () => {
     }
   };
 
-  const handleDelete = async (sku) => {
-    try {
-      await axios.delete(`http://132.148.79.85/backend/delete.php?sku=${sku}`);
-      setProducts(prevProducts => prevProducts.filter(product => product.sku !== sku));
-    } catch (error) {
-      console.log('Error deleting product:', error);
-    }
-  };
+  
+  const handleDelete = async (id) => {
+  try {
+    await axios.delete(`http://localhost:8000/app/product/delete-selected/${id}`);
+    setProducts(prevProducts => prevProducts.filter(product => product.id !== id));
+  } catch (error) {
+    console.error('Error deleting product with ID ${id}:', error);
+  }
+};
 
-  const handleMassDelete = async () => {
-    const selectedProducts = products.filter((product) => product.selected);
-    const selectedSkus = selectedProducts.map((product) => product.sku);
+const handleMassDelete = async () => {
+  const selectedProducts = products.filter((product) => product.selected);
+  const selectedIds = selectedProducts.map((product) => product.id);
+  console.log('Selected IDs:', selectedIds);
+  try {
+    await axios({
+      method: 'delete',
+      url: 'http://localhost:8000/app/product/delete-selected',
+      data: { ids: selectedIds },
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    try {
-      await axios.delete('http://132.148.79.85/backend/delete.php', { data: { skus: selectedSkus } });
-      const updatedProducts = products.filter((product) => !selectedSkus.includes(product.sku));
-      setProducts(updatedProducts);
-    } catch (error) {
-      console.log('Error deleting selected products:', error);
-    }
-  };
-
+    const updatedProducts = products.filter((product) => !selectedIds.includes(product.id));
+    setProducts(updatedProducts);
+  } catch (error) {
+    console.eror('Error deleting selected products:', error);
+  }
+};
+ 
   const handleNewProductAdded = () => {
     navigate('/add-product');
   };
 
-  const handleCheckboxChange = (sku) => {
+  const handleCheckboxChange = (id) => {
     setProducts(prevProducts =>
       prevProducts.map(product =>
-        product.sku === sku ? { ...product, selected: !product.selected } : product
+        product.id === id ? { ...product, selected: !product.selected } : product
       )
     );
   };
@@ -73,7 +80,6 @@ const ProductList = () => {
           <div className="flex space-x-2">
             <button
               className="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
-              id="delete-product-btn"
               type="button"
               onClick={handleNewProductAdded}
             >
@@ -94,9 +100,9 @@ const ProductList = () => {
       {Array.isArray(products) && products.length > 0 ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 pt-4">
           {products.map((product) => (
-            <div key={product.sku} className="border p-4 shadow-md rounded-lg">
+            <div key={product.id} className="border p-4 shadow-md rounded-lg">
               <ProductItem
-                key={product.sku}
+                key={product.id}
                 product={product}
                 onDelete={handleDelete}
                 onCheckboxChange={handleCheckboxChange}

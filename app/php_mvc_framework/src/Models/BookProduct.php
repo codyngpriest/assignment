@@ -1,42 +1,91 @@
 <?php
+/**
+ * Instance of a product
+ * php version 8.1
+ *
+ * @category Custom_MVC
+ * @package  MVC
+ * @author   Vilho Banike <vilhopriestly@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     https://codyngpriest@github.com
+ */
 
 namespace Codyngpriest\PhpMvcFramework\Models;
 
 use Codyngpriest\PhpMvcFramework\Database\DatabaseConnection;
 
+
+/**
+ * Contains props and methods specific to a Book product
+ * php version 8.1
+ *
+ * @category Custom_MVC
+ * @package  MVC
+ * @author   Vilho Banike <vilhopriestly@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     https://codyngpriest@github.com
+ */
 class BookProduct extends Product
 {
-    private $weight;
-
-    public function __construct($sku, $name, $price, $weight)
+    private $_weight;
+    /**
+     * Inherits parent Product props and encapsulates a private prop
+     *
+     * @param $sku     A product stock keeping unit
+     * @param $name    A product name
+     * @param $price   A product price
+     * @param $_weight A prop specific to Book 
+     *
+     * @return void
+     */
+    public function __construct($sku, $name, $price, $_weight)
     {
         parent::__construct($sku, $name, $price);
-        $this->weight = $weight;
+        $this->_weight = $_weight;
     }
-
-    public function setWeight($weight)
+    /**
+     * Sets weight of a Book
+     *
+     * @param $_weight A private prop for Boook
+     *
+     * @return void
+     */
+    public function setWeight($_weight)
     {
-        $this->weight = $weight;
+        $this->_weight = $_weight;
     }
-
+    /**
+     * Gets weight of Book
+     *
+     * @return The weight of the Book
+     */
     public function getWeight()
     {
-        return $this->weight;
+        return $this->_weight;
     }
-
-  public function save(ProductRepository $productRepository)
-{
-    try {
-        $productRepository->saveBookProduct($this);
-        return true;
-    } catch (\PDOException $e) {
-        // Log or handle the error gracefully
-        error_log("Error saving Book: " . $e->getMessage());
-        return false;
+    /**
+     * A save method to save a Book product to DB
+     *
+     * @param $productRepository A repository that implements save
+     *
+     * @return void
+     */
+    public function save(ProductRepository $productRepository)
+    {
+        try {
+            $productRepository->saveBookProduct($this);
+            return true;
+        } catch (\PDOException $e) {
+            // Log or handle the error gracefully
+            error_log("Error saving Book: " . $e->getMessage());
+            return false;
+        }
     }
-}
-
-
+    /**
+     * A display method to display a Book
+     *
+     * @return void
+     */
     public function display()
     {
         echo "<div>";
@@ -51,7 +100,11 @@ class BookProduct extends Product
         echo "<strong>Weight:</strong> " . $this->getWeight() . " Kg";
         echo "</div>";
     }
-
+    /**
+     * A mthod to get a Book product 
+     *
+     * @return Book
+     */ 
     public function getProductType()
     {
         return "Book";

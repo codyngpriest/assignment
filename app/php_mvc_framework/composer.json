@@ -1,0 +1,24 @@
+{
+    "name": "codyngpriest/php_mvc_framework",
+    "description": "A PHP MVC Framework",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Codyngpriest\\PhpMvcFramework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "codyngpriest",
+            "email": "vilhopriestly@gmail.com"
+        }
+    ],
+    "require": {
+        "phpdocumentor/phpdocumentor": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
+        }
+    }
+}
