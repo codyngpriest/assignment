@@ -12,9 +12,13 @@
 
 use Codyngpriest\PhpMvcFramework\Router;
 use Codyngpriest\PhpMvcFramework\Controllers\ProductController;
+use Codyngpriest\PhpMvcFramework\Controllers\DefaultController;
 
 // Instantiate a new Router
 $router = new Router();
+
+// Route for default controller
+$router->addRoute('/', DefaultController::class, 'index');
 
 // Route for adding products
 $router->addRoute('/app/product/add', ProductController::class, 'addProducts');

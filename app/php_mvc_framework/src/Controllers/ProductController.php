@@ -12,11 +12,10 @@
 namespace Codyngpriest\PhpMvcFramework\Controllers;
 
 // Enable CORS
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
-header(
-    "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"
-);
+header("Access-Control-Allow-Origin: http://34.70.175.99:8080");
+header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
 
 use Codyngpriest\PhpMvcFramework\Controller;
 use Codyngpriest\PhpMvcFramework\Models\ProductFactory;

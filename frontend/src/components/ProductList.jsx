@@ -16,7 +16,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const readResponse = await axios.get('http://localhost:8000/app/product/read');
+      const readResponse = await axios.get('http://34.70.175.99:9000/app/product/read');
 
       if (readResponse.status === 200) {
         const data = readResponse.data;
@@ -32,7 +32,7 @@ const ProductList = () => {
   
   const handleDelete = async (id) => {
   try {
-    await axios.delete(`http://localhost:8000/app/product/delete-selected/${id}`);
+    await axios.delete(`http://34.70.175.99:9000/app/product/delete-selected/${id}`);
     setProducts(prevProducts => prevProducts.filter(product => product.id !== id));
   } catch (error) {
     console.error('Error deleting product with ID ${id}:', error);
@@ -46,7 +46,7 @@ const handleMassDelete = async () => {
   try {
     await axios({
       method: 'delete',
-      url: 'http://localhost:8000/app/product/delete-selected',
+      url: 'http://34.70.175.99:9000/app/product/delete-selected',
       data: { ids: selectedIds },
       headers: { 'Content-Type': 'application/json' },
     });
@@ -88,6 +88,7 @@ const handleMassDelete = async () => {
             <button
               className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               type="button"
+	      id="delete-product-btn"
               onClick={handleMassDelete}
             >
               MASS DELETE

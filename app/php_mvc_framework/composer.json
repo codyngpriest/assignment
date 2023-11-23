@@ -12,13 +12,6 @@
             "name": "codyngpriest",
             "email": "vilhopriestly@gmail.com"
         }
-    ],
-    "require": {
-        "phpdocumentor/phpdocumentor": "^3.0"
-    },
-    "config": {
-        "allow-plugins": {
-            "symfony/flex": true
-        }
-    }
+    ]
+  
 }

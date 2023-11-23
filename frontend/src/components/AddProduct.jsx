@@ -19,14 +19,22 @@ function AddProduct() {
   const [length, setLength] = useState('');
   const [notification, setNotification] = useState('');
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/app/product/read');
+      const response = await axios.get('http://34.70.175.99:9000/app/product/read');
+      console.log('API Response:', response);
+
+      const fetchedProducts = Array.isArray(response.data) ? response.data : [];
+      console.log('Fetched products:', fetchedProducts);
+
       console.log('Fetched products:', response.data);
+
       setProducts(response.data);
+      setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.error('Error fetching products', error);
     }
@@ -35,6 +43,18 @@ function AddProduct() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+   useEffect(() => {
+    if (!loading) {
+      // Check for duplicate SKU
+      const duplicateProduct = products.find((product) => product.sku === sku);
+      if (duplicateProduct) {
+        setNotification('A product with the same SKU already exists.');
+        return;
+      }
+    }
+  }, [loading, products]);
+
 
   const handleFormSubmit = async (e) => {
   e.preventDefault();
@@ -102,7 +122,7 @@ function AddProduct() {
 
   try {
     // Add the new product
-    const addResponse = await axios.post('http://localhost:8000/app/product/add', newProduct);
+    const addResponse = await axios.post('http://34.70.175.99:9000/app/product/add', newProduct);
 
     if (addResponse.status === 200) {
       setNotification('Product added successfully');
@@ -163,7 +183,6 @@ function AddProduct() {
             id="sku"
             value={sku}
             onChange={(e) => setSku(e.target.value)}
-            placeholder="Please, enter product SKU"
             required
             className="px-4 py-2 border border-gray-300 rounded w-full"
           />
@@ -177,7 +196,6 @@ function AddProduct() {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Please, enter product name"
             required
             className="px-4 py-2 border border-gray-300 rounded w-full"
           />
@@ -191,7 +209,6 @@ function AddProduct() {
             id="price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="Please, enter product price"
             required
             className="px-4 py-2 border border-gray-300 rounded w-full"
           />
@@ -207,19 +224,34 @@ function AddProduct() {
             required
             className="px-4 py-2 border border-gray-300 rounded w-full"
           >
-            <option value="TypeSwitcher">Type Switcher</option>
-            <option id="Furniture" value="Furniture">
-              Furniture
-            </option>
+            <option value="TypeSwitcher" id="productType">Type Switcher</option>
             <option id="DVD" value="DVD">
               DVD
+            </option>
+            <option id="Furniture" value="Furniture">
+              Furniture
             </option>
             <option id="Book" value="Book">
               Book
             </option>
           </select>
         </div>
-              {productType === 'Furniture' && (
+	{productType === 'DVD' && (
+        <>
+          <div>
+            <label htmlFor="size">Size (MB):</label>
+            <input
+              type="number"
+              id="size"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              required
+            />
+          </div>
+            <p className='text-red-600 mt-4'>Please, provide size in Megabytes</p>
+        </>
+      )} 
+      {productType === 'Furniture' && (
         <>
           <div>
             <label htmlFor="height">Height (CM):</label>
@@ -228,7 +260,6 @@ function AddProduct() {
               id="height"
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              placeholder="Please, enter height"
               required
             />
           </div>
@@ -239,7 +270,6 @@ function AddProduct() {
               id="width"
               value={width}
               onChange={(e) => setWidth(e.target.value)}
-              placeholder="Please, enter width"
               required
             />
           </div>
@@ -250,27 +280,10 @@ function AddProduct() {
               id="length"
               value={length}
               onChange={(e) => setLength(e.target.value)}
-              placeholder="Please, enter length"
               required
             />
           </div>
             <p className='text-red-600 mt-4'>Please, provide dimensions in HxWxL format</p>
-        </>
-      )}
-      {productType === 'DVD' && (
-        <>
-          <div>
-            <label htmlFor="size">Size (MB):</label>
-            <input
-              type="number"
-              id="size"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              placeholder="Please, enter size"
-              required
-            />
-          </div>
-            <p className='text-red-600 mt-4'>Please, provide size in Megabytes</p>
         </>
       )}
       {productType === 'Book' && (
@@ -282,7 +295,6 @@ function AddProduct() {
               id="weight"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              placeholder="Please, enter weight"
               required
             />
           </div>
